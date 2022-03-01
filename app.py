@@ -93,7 +93,7 @@ def ajout_site():
             return redirect(url_for('ajout_activite', id=contact.id))
         else :            
             flash(u'Nouveau référent correctement ajouté.', 'success')
-            return render_template('index.html')
+            return redirect(url_for('index'))
     else:
         return render_template('ajout_site.html')
 
@@ -151,7 +151,7 @@ def ajout_activite(id):
             return redirect(url_for('ajout_activite', id=contact.id))
         else :            
             flash(u'Nouvelle activité correctement ajoutée.', 'success')
-            return render_template('index.html')
+            return redirect(url_for('index'))
     else:
 
         return render_template('ajout_activite.html', contact=contact)

@@ -254,7 +254,7 @@
     }
     var text = "<div style=\"text-align: center;\"><b>" +point.STRUCTURE+" "+site_web+"</b><br><br> "+ prenom + nom + fonction + telephone +"<br><br><a href='mailto:"+ point.MAIL + "'>Envoyer un mail</a><hr><b>Activités proposées :</b></div><br>"+ carousel +"<br><div style=\"text-align:right\"><a class=\"btn-sm\" href=\"{{url_for('ajout_activite', id='')}}"+point.ID+"\"><i class=\"fa fa-plus\"></i> Ajouter une activité</a><div>";
     marker = L.marker([point.LAT, point.LNG], {icon: icon})
-    .bindPopup(text, {maxWidth : 560});
+    .bindPopup(text, {maxWidth : 800, minWidth: 400});
     layer.addLayer(marker);
   }
 
