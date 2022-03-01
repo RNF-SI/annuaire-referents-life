@@ -1,0 +1,190 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style media="screen">
+  .boutonrond {
+    border-radius: 20%;
+  }
+</style>
+
+<div class="jumbotron bg-dark text-white">
+  <div class="container">
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    {% for category, message in messages %}
+    <div class="alert alert-{{ category }}">{{ message }}</div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+    <h2 style="color: orange;">Ajouter un nouveau référent</h2>
+    <p>Entrez les coordonnées du référent ou de la structure référente</p>
+    <div class="text-center alerte-remplissage">
+      <b>ATTENTION</b> : Veillez à remplir correctement, et de façon complète, l'ensemble des informations demandées.
+      <br>Aucune modification n'est possible ensuite sans passer par l'administrateur.
+      <br>Les champs marqués d'un astérisque (<span style="color:red;">*</span>) sont obligatoires.
+    </div>
+    <hr>
+    <form action="{{ url_for('ajout_site') }}" , method="POST">
+
+        <div class="row">
+            <div class="col col-md-12" id="adresse_total">
+                <div class="row">
+                    <div class="col col-md-3">
+                        <div class="form-group">
+                            <label for="nom">Nom </label>
+                            <input type="text" class="form-control" name="nom" placeholder="Nom"
+                                autocomplete=family-name>
+                        </div>
+                    </div>
+                    <div class="col col-md-3">
+                        <div class="form-group">
+                            <label for="prenom">Prénom </label>
+                            <input type="text" class="form-control" name="prenom" placeholder="Prénom"
+                                autocomplete=given-name>
+                        </div>
+                    </div>
+                    <div class="col col-md-3">
+                        <div class="form-group">
+                            <label for="fonction">Fonction</label>
+                            <input type="text" class="form-control" name="fonction" placeholder="Fonction"
+                                autocomplete=organization-title>
+                        </div>
+                    </div>
+
+                    <div class="col col-md-3">
+                        <div class="form-group">
+                            <label for="telephone">Téléphone</label>
+                            <input type="text" class="form-control" id="telephone" name="telephone" placeholder="Téléphone"
+                                maxlength="10" autocomplete=tel-national
+                                onkeydown="if(event.keyCode==32) return false;">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col col-md-4">
+                        <div class="form-group">
+                            <label for="structure">Structure <span style="color:red;">*</span></label>
+                            <input type="text" class="form-control" name="structure" placeholder="Structure"
+                                autocomplete=organization required>
+                        </div>
+                    </div>
+                    <div class="col col-md-4">
+                        <div class="form-group">
+                            <label for="email">E-mail <span style="color:red;">*</span></label>
+                            <input type="email" class="form-control" name="email" placeholder="E-mail"
+                                autocomplete=email required onkeydown="if(event.keyCode==32) return false;">
+                        </div>
+                    </div>
+                    <div class="col col-md-4">
+                        <div class="form-group">
+                            <label for="site">Site internet</label>
+                            <input type="text" class="form-control" name="site" placeholder="Nom du site"
+                                autocomplete=organization>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col col-md-2"></div>
+            <div class="col col-md-4">
+                <div class="form-group">
+                    <label for="lat">Latitude <span style="color:red;">*</span></label>
+                    <input type="text" class="form-control readonly" id="lat" name="lat"
+                        placeholder="Cliquez sur la carte" required>
+                </div>
+            </div>
+            <div class="col col-md-4">
+                <div class="form-group">
+                    <label for="long">Longitude <span style="color:red;">*</span></label>
+                    <input type="text" class="form-control readonly" id="long" name="long"
+                        placeholder="Cliquez sur la carte" required>
+                </div>
+            </div>
+        </div>
+      <div>
+        <div id="map" style="height: 400px; width: 100%">
+        </div>
+      </div>
+      <br>
+      <hr>
+      <div class="col-auto my-1">
+        <div class="custom-control custom-checkbox mr-sm-2">
+          <input type="checkbox" class="custom-control-input" id="exactitude" required>
+          <label class="custom-control-label" for="exactitude">Je certifie l'exactitude des informations fournies
+            ci-dessus</label>
+        </div>
+      </div>
+      <div class="col-auto my-1">
+        <div class="custom-control custom-checkbox mr-sm-2">
+          <input type="checkbox" class="custom-control-input" id="publication" required>
+          <label class="custom-control-label" for="publication">J'accepte que les informations transmises soient
+            publiées sur ce site et certifie avoir l'autorisation de les publier</label>
+        </div>
+      </div>
+      <hr>
+      <div class="row">
+        <div class="col col-md-8">
+        </div>
+        <div class="col col-md-4">
+          <div class="form-group">
+            <label for="type_ajout">Type d'ajout <span style="color:red;">*</span></label>
+            <select class="form-control" id="type_ajout" name="type_ajout">
+              <option selected disabled value=null></option>
+              <option value="simple">Simple référent</option>
+              <option value="activite">Ajouter également une activité</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col col-md-1">
+        </div>
+        <div class="col col-md-2 text-center">
+          <button type="button" class="btn btn-danger btn-block"
+            onclick="window.location.href='{{ url_for('index')}}'"><i class="fas fa-times"></i> Annuler</button>
+        </div>
+        <div class="col col-md-6">
+        </div>
+        <div class="col col-md-2 text-center">
+          <button type="submit" class="btn btn-success btn-block"><i class="fas fa-check"></i> Envoyer</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script type="text/javascript">
+
+  $(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+  })
+
+  var map = L.map('map').setView([47, 2.5], 5);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  }).addTo(map);
+
+  var theMarker = {};
+
+  map.on('click', function (e) {
+    console.log(theMarker);
+    if (theMarker != undefined) {
+      map.removeLayer(theMarker);
+    };
+    document.getElementById("lat").value = e.latlng.lat;
+    document.getElementById("long").value = e.latlng.lng;
+    theMarker = L.marker([e.latlng.lat, e.latlng.lng]).addTo(map);
+    console.log(theMarker);
+  });
+
+  $(".readonly").on('keydown paste', function (e) {
+    e.preventDefault();
+  });
+
+</script>
+{% endblock content %}

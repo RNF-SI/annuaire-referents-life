@@ -1,0 +1,170 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container">
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+{% for category, message in messages %}
+<div class="alert alert-{{ category }}">{{ message }}</div>
+{% endfor %}
+{% endif %}
+{% endwith %}
+</div>
+<br>
+<div class="container">
+  <div class="">
+    <p style="text-align:justify;">Depuis 2019, l’UNPG, MI-F, le SFIC et RNF sont engagés dans un partenariat construit autour des liens qui unissent l’univers des carrières, en activité ou après exploitation, et le patrimoine naturel. Plus particulièrement, les carrières présentent un intérêt évident pour les géologues, qui y trouvent de magnifiques affleurements frais et un grand nombre de sites du patrimoine géologique français sont associés à des fronts de taille.
+<br><br>C’est dans ce contexte que les 4 réseaux partenaires ont souhaité mettre en place un annuaire commun dans lequel leurs membres pourront rechercher ponctuellement des interlocuteurs autour d’eux en cas de besoin. </p>
+  </div>
+  <br>
+  <hr style="height: 3px; color: #839D2D; width: 50%;">
+  <br>
+  <div class="boutons_index"><a class="btn btn-primary btn-lg" href="{{ url_for('ajout_site')}}" role="button">Ajouter un référent</a></div>
+  <br>
+<div id="map" style="height: 600px; width: 100%">
+  </div>
+</div>
+<br>
+
+<script>
+
+  var map = L.map('map').setView([47, 2.5], 6);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  }).addTo(map);
+
+  var referent_icone = new L.Icon({
+    iconUrl: "{{ url_for('static', filename='img/icone_referent.png')}}",
+    iconSize: [20, 20],
+    iconAnchor: [10, 11],
+    popupAnchor: [1, -11]
+  });
+
+  var activite_en_ligne_icone = new L.Icon({
+    iconUrl: "{{ url_for('static', filename='img/icone_activite_jaune.png')}}",
+    iconSize: [20, 20],
+    iconAnchor: [10, 11],
+    popupAnchor: [1, -11]
+  });
+
+  var activite_mixte_icone = new L.Icon({
+    iconUrl: "{{ url_for('static', filename='img/icone_activite_vert.png')}}",
+    iconSize: [20, 20],
+    iconAnchor: [10, 11],
+    popupAnchor: [1, -11]
+  });
+
+  var activite_sur_place_icone = new L.Icon({
+    iconUrl: "{{ url_for('static', filename='img/icone_activite_bleu.png')}}",
+    iconSize: [20, 20],
+    iconAnchor: [10, 11],
+    popupAnchor: [1, -11]
+  });
+
+  var referent = [
+  {% for contact in contacts %}
+  {% if not contact.activites %}
+  {
+    "LNG": "{{ contact.long }}",
+    "LAT": "{{ contact.lat }}",
+    "SURNAME": "{{ contact.prenom }}",
+    "NAME": "{{ contact.nom }}",
+    "FONCTION": "{{ contact.fonction }}",
+    "STRUCTURE": "{{ contact.structure }}",
+    "ID" : "{{ contact.id }}"
+  },
+  {% endif %}
+  {% endfor %}
+  ];
+
+  var activite_mixte = [
+  {% for contact in contacts %}
+  {% if contact.activites %}
+  {
+    "LNG": "{{ contact.long }}",
+    "LAT": "{{ contact.lat }}",
+    "SURNAME": "{{ contact.prenom }}",
+    "NAME": "{{ contact.nom }}",
+    "FONCTION": "{{ contact.fonction }}",
+    "STRUCTURE": "{{ contact.structure }}",
+    "ID" : "{{ contact.id }}",
+    "ACITIVITES" : [
+    {% for activite in contact.activites %}
+  {
+    "TITRE":"{{ activite.titre }}",
+    "WEB" : "{{ activite.site_web }}",
+    "ENLIGNE" : "{{ activite.enligne }}",
+    "DATE"  : "{{ activite.date }}",
+    "ADRESSE" : "{{ activite.adresse }}",
+    "DESCRIPTION" : "{{ activite.description }}",
+    "INSCRIPTION" : "{{ activite.inscription }}",
+    "GRATUIT" : "{{ activite.gratuit }}",
+    "LIEN" : "{{ activite.lien_inscription }}"
+  },
+  {% endfor %}
+    ]
+  },
+  {% endif %}
+  {% endfor %}
+  ];
+  
+console.log(activite_mixte);
+
+  var sfic = [
+  {% for contact in contacts %}
+  {% if contact.reseau == "SFIC" %}
+  {
+    "LNG": "{{ contact.long }}",
+    "LAT": "{{ contact.lat }}",
+    "SURNAME": "{{ contact.prenom }}",
+    "NAME": "{{ contact.nom }}",
+    "FONCTION": "{{ contact.fonction }}",
+    "STRUCTURE": "{{ contact.structure }}",
+    "ID" : "{{ contact.id }}"
+  },
+  {% endif %}
+  {% endfor %}
+  ];
+
+  var rnf = [
+  {% for contact in contacts %}
+  {% if contact.reseau == "RNF" %}
+  {
+    "LNG": "{{ contact.long }}",
+    "LAT": "{{ contact.lat }}",
+    "SURNAME": "{{ contact.prenom }}",
+    "NAME": "{{ contact.nom }}",
+    "FONCTION": "{{ contact.fonction }}",
+    "STRUCTURE": "{{ contact.structure }}",
+    "ID" : "{{ contact.id }}"
+  },
+  {% endif %}
+  {% endfor %}
+  ];
+
+  var referentLayer = L.layerGroup([]);
+  var activite_mixteLayer = L.layerGroup([]);
+  var unpgLayer = L.layerGroup([]);
+  var sficLayer = L.layerGroup([]);
+
+
+  function makePointLayer(point, icon, layer){
+    marker = L.marker([point.LAT, point.LNG], {icon: icon})
+    .bindPopup("<div style=\"text-align: center;\"><b>" +point.SURNAME+" "+point.NAME+"</b><br><br> "+ point.FONCTION +" chez <br>" + point.STRUCTURE+ "<br><a>Plus d'informations</a></div>");
+    layer.addLayer(marker);
+  }
+
+  referent.forEach(element => { makePointLayer(element, referent_icone, referentLayer)})
+  activite_mixte.forEach(element => { makePointLayer(element, activite_mixte_icone, activite_mixteLayer)})
+  // unpg.forEach(element => { makePointLayer(element, unpgIcon, unpgLayer)})
+  // sfic.forEach(element => { makePointLayer(element, sficIcon, sficLayer)})
+
+  referentLayer.addTo(map);
+  activite_mixteLayer.addTo(map);
+  // unpgLayer.addTo(map);
+  // sficLayer.addTo(map);
+
+</script>
+
+{% endblock content %}
