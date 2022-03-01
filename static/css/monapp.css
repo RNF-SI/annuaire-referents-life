@@ -100,9 +100,9 @@
 .check_carto {
   display: flex;
   justify-content: space-between;
-  width: 50%;
-  margin-left: 25%;
-  margin-right: 25%;
+  width: 80%;
+  margin-left: 10%;
+  margin-right: 10%;
 }
 
 .check_carto div {
@@ -133,4 +133,24 @@
 
 .listes-fiche a {
   color : white;
+}
+
+.carousel-control-next,
+.carousel-control-prev /*, .carousel-indicators */ {
+    filter: invert(100%);
+}
+
+.btn-sm {
+  background-color: DodgerBlue; /* Blue background */
+  border: none; /* Remove borders */
+  color: white !important; /* White text */
+  /* padding: 12px 16px; */
+  font-size: 10px;
+  cursor: pointer; /* Mouse pointer on hover */
+  /* height: 10px; */
+}
+
+/* Darker background on mouse-over */
+.btn-sm:hover {
+  background-color: RoyalBlue;
 }

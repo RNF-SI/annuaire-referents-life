@@ -13,16 +13,37 @@
 <br>
 <div class="container">
   <div class="">
-    <p style="text-align:justify;">Depuis 2019, l’UNPG, MI-F, le SFIC et RNF sont engagés dans un partenariat construit autour des liens qui unissent l’univers des carrières, en activité ou après exploitation, et le patrimoine naturel. Plus particulièrement, les carrières présentent un intérêt évident pour les géologues, qui y trouvent de magnifiques affleurements frais et un grand nombre de sites du patrimoine géologique français sont associés à des fronts de taille.
-<br><br>C’est dans ce contexte que les 4 réseaux partenaires ont souhaité mettre en place un annuaire commun dans lequel leurs membres pourront rechercher ponctuellement des interlocuteurs autour d’eux en cas de besoin. </p>
+    <p style="text-align:justify;"> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur nec convallis neque. Donec a convallis nibh. Pellentesque erat velit, fringilla vel congue non, bibendum nec purus. Cras ut lacinia massa. In lacus lorem, ornare nec cursus id, sollicitudin eget lacus. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Integer suscipit enim tortor, vel hendrerit orci imperdiet ut. Ut vehicula nunc velit, vitae tempus purus malesuada vel. Cras a faucibus ipsum, sed blandit mauris. Phasellus eu erat pharetra, luctus orci ac, interdum risus. 
+<br><br>  Ut eros leo, pulvinar vitae massa vel, eleifend consequat sem. Phasellus in nibh vel ante ullamcorper varius. Praesent finibus felis quis finibus dapibus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean semper lacinia magna, ac imperdiet augue euismod ut. Pellentesque a arcu mi. Aliquam vestibulum lobortis eros, eu viverra ante interdum ac. Aenean vel consectetur est. Donec ac arcu nisi. Quisque cursus, tortor vel pretium consequat, dui ex bibendum eros, et pretium risus mauris et urna. Nunc egestas diam venenatis, tristique magna quis, tempus leo. Sed interdum ullamcorper rutrum. </p>
   </div>
   <br>
   <hr style="height: 3px; color: #839D2D; width: 50%;">
   <br>
   <div class="boutons_index"><a class="btn btn-primary btn-lg" href="{{ url_for('ajout_site')}}" role="button">Ajouter un référent</a></div>
   <br>
+    <div class="row check_carto">
+      <div class="custom-control custom-switch">
+        <input type="checkbox" class="custom-control-input" id="referentSwitch" onchange="toggleReferent(this)" checked>
+        <label class="custom-control-label" for="referentSwitch"> <img src="{{ url_for('static', filename='img/icone_referent.png')}}" alt="" width="20" height="20"> Référents</label>
+      </div>
+      <div class="custom-control custom-switch">
+        <input type="checkbox" class="custom-control-input" id="enligneSwitch" onchange="toggleActiviteEnLigne(this)" checked>
+        <label class="custom-control-label" for="enligneSwitch"> <img src="{{ url_for('static', filename='img/icone_activite_jaune.png')}}" alt="" width="20" height="20"> Activités en ligne</label>
+      </div>
+      <div class="custom-control custom-switch">
+        <input type="checkbox" class="custom-control-input" id="enpresentielSwitch" onchange="toggleActiviteEnPresentiel(this)" checked>
+        <label class="custom-control-label" for="enpresentielSwitch"> <img src="{{ url_for('static', filename='img/icone_activite_bleu.png')}}" alt="" width="20" height="20"> Activités en présentiel</label>
+      </div>
+      <div class="custom-control custom-switch">
+        <input type="checkbox" class="custom-control-input" id="mixteSwitch" onchange="toggleActiviteMixte(this)" checked>
+        <label class="custom-control-label" for="mixteSwitch"> <img src="{{ url_for('static', filename='img/icone_activite_vert.png')}}" alt="" width="20" height="20"> Activités mixtes</label>
+      </div>
+    </div>
+    <hr>
 <div id="map" style="height: 600px; width: 100%">
   </div>
+  <br>
+  <div id="informations"></div>
 </div>
 <br>
 
@@ -64,23 +85,7 @@
 
   var referent = [
   {% for contact in contacts %}
-  {% if not contact.activites %}
-  {
-    "LNG": "{{ contact.long }}",
-    "LAT": "{{ contact.lat }}",
-    "SURNAME": "{{ contact.prenom }}",
-    "NAME": "{{ contact.nom }}",
-    "FONCTION": "{{ contact.fonction }}",
-    "STRUCTURE": "{{ contact.structure }}",
-    "ID" : "{{ contact.id }}"
-  },
-  {% endif %}
-  {% endfor %}
-  ];
-
-  var activite_mixte = [
-  {% for contact in contacts %}
-  {% if contact.activites %}
+  {% if contact.enligne == False and contact.enpresentiel == False %}
   {
     "LNG": "{{ contact.long }}",
     "LAT": "{{ contact.lat }}",
@@ -89,7 +94,97 @@
     "FONCTION": "{{ contact.fonction }}",
     "STRUCTURE": "{{ contact.structure }}",
     "ID" : "{{ contact.id }}",
-    "ACITIVITES" : [
+    "SITE" : "{{ contact.site }}",
+    "PHONE" : "{{ contact.telephone }}",
+    "MAIL" : "{{ contact.email }}"
+  },
+  {% endif %}
+  {% endfor %}
+  ];
+
+  var activite_mixte = [
+  {% for contact in contacts %}
+  {% if contact.enligne == True and contact.enpresentiel == True %}
+  {
+    "LNG": "{{ contact.long }}",
+    "LAT": "{{ contact.lat }}",
+    "SURNAME": "{{ contact.prenom }}",
+    "NAME": "{{ contact.nom }}",
+    "FONCTION": "{{ contact.fonction }}",
+    "STRUCTURE": "{{ contact.structure }}",
+    "ID" : "{{ contact.id }}",
+    "SITE" : "{{ contact.site }}",
+    "PHONE" : "{{ contact.telephone }}",
+    "MAIL" : "{{ contact.email }}",
+    "ACTIVITES" : [
+    {% for activite in contact.activites %}
+  {
+    "TITRE":"{{ activite.titre }}",
+    "WEB" : "{{ activite.site_web }}",
+    "ENLIGNE" : "{{ activite.enligne }}",
+    "DATE"  : "{{ activite.date }}",
+    "ADRESSE" : "{{ activite.adresse }}",
+    "DESCRIPTION" : "{{ activite.description }}",
+    "INSCRIPTION" : "{{ activite.inscription }}",
+    "GRATUIT" : "{{ activite.gratuit }}",
+    "LIEN" : "{{ activite.lien_inscription }}"
+  },
+  {% endfor %}
+    ]
+  },
+  {% endif %}
+  {% endfor %}
+  ];
+
+  var activite_en_ligne = [
+  {% for contact in contacts %}
+  {% if contact.enligne == True and contact.enpresentiel == False %}
+  {
+    "LNG": "{{ contact.long }}",
+    "LAT": "{{ contact.lat }}",
+    "SURNAME": "{{ contact.prenom }}",
+    "NAME": "{{ contact.nom }}",
+    "FONCTION": "{{ contact.fonction }}",
+    "STRUCTURE": "{{ contact.structure }}",
+    "ID" : "{{ contact.id }}",
+    "SITE" : "{{ contact.site }}",
+    "PHONE" : "{{ contact.telephone }}",
+    "MAIL" : "{{ contact.email }}",
+    "ACTIVITES" : [
+    {% for activite in contact.activites %}
+  {
+    "TITRE":"{{ activite.titre }}",
+    "WEB" : "{{ activite.site_web }}",
+    "ENLIGNE" : "{{ activite.enligne }}",
+    "DATE"  : "{{ activite.date }}",
+    "ADRESSE" : "{{ activite.adresse }}",
+    "DESCRIPTION" : "{{ activite.description }}",
+    "INSCRIPTION" : "{{ activite.inscription }}",
+    "GRATUIT" : "{{ activite.gratuit }}",
+    "LIEN" : "{{ activite.lien_inscription }}"
+  },
+  {% endfor %}
+    ]
+  },
+  {% endif %}
+  {% endfor %}
+  ];
+
+  var activite_sur_place = [
+  {% for contact in contacts %}
+  {% if contact.enligne == False and contact.enpresentiel == True %}
+  {
+    "LNG": "{{ contact.long }}",
+    "LAT": "{{ contact.lat }}",
+    "SURNAME": "{{ contact.prenom }}",
+    "NAME": "{{ contact.nom }}",
+    "FONCTION": "{{ contact.fonction }}",
+    "STRUCTURE": "{{ contact.structure }}",
+    "ID" : "{{ contact.id }}",
+    "SITE" : "{{ contact.site }}",
+    "PHONE" : "{{ contact.telephone }}",
+    "MAIL" : "{{ contact.email }}",
+    "ACTIVITES" : [
     {% for activite in contact.activites %}
   {
     "TITRE":"{{ activite.titre }}",
@@ -109,61 +204,113 @@
   {% endfor %}
   ];
   
-console.log(activite_mixte);
-
-  var sfic = [
-  {% for contact in contacts %}
-  {% if contact.reseau == "SFIC" %}
-  {
-    "LNG": "{{ contact.long }}",
-    "LAT": "{{ contact.lat }}",
-    "SURNAME": "{{ contact.prenom }}",
-    "NAME": "{{ contact.nom }}",
-    "FONCTION": "{{ contact.fonction }}",
-    "STRUCTURE": "{{ contact.structure }}",
-    "ID" : "{{ contact.id }}"
-  },
-  {% endif %}
-  {% endfor %}
-  ];
-
-  var rnf = [
-  {% for contact in contacts %}
-  {% if contact.reseau == "RNF" %}
-  {
-    "LNG": "{{ contact.long }}",
-    "LAT": "{{ contact.lat }}",
-    "SURNAME": "{{ contact.prenom }}",
-    "NAME": "{{ contact.nom }}",
-    "FONCTION": "{{ contact.fonction }}",
-    "STRUCTURE": "{{ contact.structure }}",
-    "ID" : "{{ contact.id }}"
-  },
-  {% endif %}
-  {% endfor %}
-  ];
-
   var referentLayer = L.layerGroup([]);
   var activite_mixteLayer = L.layerGroup([]);
-  var unpgLayer = L.layerGroup([]);
-  var sficLayer = L.layerGroup([]);
+  var activite_en_ligneLayer = L.layerGroup([]);
+  var activite_sur_placeLayer = L.layerGroup([]);
 
 
   function makePointLayer(point, icon, layer){
+    var site_web = (point.SITE == 'None') ? '' : ' (<a href="http://' + point.SITE + '">'+ point.SITE + '</a>)';
+    var prenom = (point.SURNAME == 'None') ? '' : point.SURNAME + ' ';
+    var nom = (point.NAME == 'None') ? '' : point.NAME + ' ';
+    var fonction = (point.FONCTION == 'None') ? '' : '- ' + point.FONCTION;
+    var telephone = (point.PHONE == 'None') ? '' : ' - ' + point.PHONE;
+    var activites = '';
+    if (point.ACTIVITES) {
+      point['ACTIVITES'].forEach(function (element, index) {
+        
+        var active = '';
+        if (index == 0){active = 'active'}
+        if (element.ENLIGNE == "True") {
+          var enligne = 'En ligne'
+        } else {
+          var enligne = 'Sur place'
+        }
+        if (element.GRATUIT == "True") {
+          var prix = 'Gratuit'
+        } else {
+          var prix = 'Payant'
+        }
+        if (element.ADRESSE != "None") {
+          var lieu = '<b>Lieu : </b>' + element.ADRESSE
+        } else {
+          var lieu = '<b>Lieu : </b>' + element.WEB
+        }
+        var datelieu = '<p style=\"float : left\"><b>Date : </b>' + element.DATE + '</p><p style=\"float : right\"> '+ lieu +'</p>';
+        if (element.INSCRIPTION == "True") {
+          var inscription = '<div><b>Inscription obligatoire : </b> <a href="http://' + element.LIEN + '">'+ element.LIEN + '</a></div>'
+        } else if (element.INSCRIPTION == "False" && element.LIEN == "None"){
+          var inscription = "<div><b>Pas d'inscription</b></div>"
+        } else {
+          var inscription = "<div><b>Inscription optionelle : </b> <a href=\"http://" + element.LIEN + "\">"+ element.LIEN + "</a></div>"
+        }
+        var text = "<div class=\"carousel-item " + active +"\"><div><div><p style=\"float : left\"><b>"+element.TITRE + "</b></p><p style=\"float : right\">" + enligne + " / " + prix + "</p></div><div style=\"clear: both;width: 80%;margin-left:10%;margin-right:10%\">"+ datelieu + "</div></div><div style=\"clear: both;display: inline-block \">"+ element.DESCRIPTION +"</div><br><br><div>"+ inscription +"</div></div>"
+        activites += text;
+      })
+      var carousel = "<div id=\"carouselExampleControls\" class=\"carousel slide\" data-ride=\"carousel\"><div class=\"carousel-inner\">"+ activites +"</div><a class=\"carousel-control-prev\" href=\"#carouselExampleControls\" role=\"button\" data-slide=\"prev\"><span class=\"carousel-control-prev-icon\" aria-hidden=\"true\"></span><span class=\"sr-only\">Previous</span></a><a class=\"carousel-control-next\" href=\"#carouselExampleControls\" role=\"button\" data-slide=\"next\"><span class=\"carousel-control-next-icon\" aria-hidden=\"true\"></span><span class=\"sr-only\">Next</span></a></div>"
+    } else {
+      var carousel = '<div style=\"text-align: center;\">Aucune activité proposée à ce jour</div>'
+    }
+    var text = "<div style=\"text-align: center;\"><b>" +point.STRUCTURE+" "+site_web+"</b><br><br> "+ prenom + nom + fonction + telephone +"<br><br><a href='mailto:"+ point.MAIL + "'>Envoyer un mail</a><hr><b>Activités proposées :</b></div><br>"+ carousel +"<br><div style=\"text-align:right\"><a class=\"btn-sm\" href=\"{{url_for('ajout_activite', id='')}}"+point.ID+"\"><i class=\"fa fa-plus\"></i> Ajouter une activité</a><div>";
     marker = L.marker([point.LAT, point.LNG], {icon: icon})
-    .bindPopup("<div style=\"text-align: center;\"><b>" +point.SURNAME+" "+point.NAME+"</b><br><br> "+ point.FONCTION +" chez <br>" + point.STRUCTURE+ "<br><a>Plus d'informations</a></div>");
+    .bindPopup(text, {maxWidth : 560});
     layer.addLayer(marker);
   }
 
   referent.forEach(element => { makePointLayer(element, referent_icone, referentLayer)})
   activite_mixte.forEach(element => { makePointLayer(element, activite_mixte_icone, activite_mixteLayer)})
-  // unpg.forEach(element => { makePointLayer(element, unpgIcon, unpgLayer)})
-  // sfic.forEach(element => { makePointLayer(element, sficIcon, sficLayer)})
+  activite_en_ligne.forEach(element => { makePointLayer(element, activite_en_ligne_icone, activite_en_ligneLayer)})
+  activite_sur_place.forEach(element => { makePointLayer(element, activite_sur_place_icone, activite_sur_placeLayer)})
 
   referentLayer.addTo(map);
   activite_mixteLayer.addTo(map);
-  // unpgLayer.addTo(map);
-  // sficLayer.addTo(map);
+  activite_en_ligneLayer.addTo(map);
+  activite_sur_placeLayer.addTo(map);
+
+  function toggleReferent (e) {
+    if (e.checked) {
+      map.addLayer(referentLayer);
+    } else {
+      map.removeLayer(referentLayer);
+    }
+  }
+
+  function toggleActiviteEnLigne (e) {
+    if (e.checked) {
+      map.addLayer(activite_en_ligneLayer);
+    } else {
+      map.removeLayer(activite_en_ligneLayer);
+    }
+  }
+
+  function toggleActiviteEnPresentiel (e) {
+    if (e.checked) {
+      map.addLayer(activite_sur_placeLayer);
+    } else {
+      map.removeLayer(activite_sur_placeLayer);
+    }
+  }
+
+  function toggleActiviteMixte (e) {
+    if (e.checked) {
+      map.addLayer(activite_mixteLayer);
+    } else {
+      map.removeLayer(activite_mixteLayer);
+    }
+  }
+
+  function clickOnFeature(e) {
+    var layer = e.target
+    document.getElementById("informations").innerText = layer.feature.properties.structure;
+  }
+
+  function onEachFeature(feature, layer) {
+    layer.on({
+        click: clickOnFeature
+    });
+}
+
 
 </script>
 

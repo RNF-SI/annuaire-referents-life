@@ -27,19 +27,11 @@ class Annuaire(db.Model):
     fonction = db.Column(db.String(255))
     site = db.Column(db.String(255))
     structure = db.Column(db.String(255))
-    # region = db.Column(db.String(100))
-    # departement = db.Column(db.String(100))
-    # adresse = db.Column(db.String(100))
-    # commune = db.Column(db.String(100))
-    # code_postal = db.Column(db.String(5))
-    # telephone_port = db.Column(db.String(10))
-    # reseau = db.Column(db.String(100))
     lat = db.Column(db.Float)
     long = db.Column(db.Float)
-    # sites = db.relationship('Site', backref='annuaire', lazy=True)
-    # expertises = db.relationship('Expertise', backref='annuaire', lazy=True)
-    # created_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
-    # active = db.Column(db.Boolean, server_default=u'false')
+    created_at = db.Column(db.DateTime, default=datetime.now)
+    enligne = db.Column(db.Boolean, default=False)
+    enpresentiel = db.Column(db.Boolean, default=False)
     activites = db.relationship("Activite", back_populates='structure')
 
 class Activite(db.Model):
@@ -60,8 +52,8 @@ class Activite(db.Model):
 @app.route("/")
 def index():
     contacts = Annuaire.query.all()
-    activites = Activite.query.all()
-    return render_template('index.html', contacts=contacts, activites=activites)
+
+    return render_template('index.html', contacts=contacts)
 
 @app.route('/ajout-site', methods=['GET', 'POST'])
 def ajout_site():
@@ -146,6 +138,11 @@ def ajout_activite(id):
                     body= "Une activité a été ajouté au MOOC pour la structure %s" % contact.structure
             )
         mail.send(msg)
+
+        if enligne == True :
+            contact.enligne = True
+        else :
+            contact.enpresentiel = True
 
         db.session.commit()
 
