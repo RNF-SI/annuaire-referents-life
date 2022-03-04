@@ -82,7 +82,7 @@ def ajout_site():
         db.session.add(annuaire)
 
         msg = Message("Ajout d'un référent au MOOC", sender = 'si@rnfrance.org',
-                recipients = ['si@rnfrance.org'],
+                recipients = ['contact-moocnaturadapt@tela-botanica.org'],
                 body= "Un référent a été ajouté au MOOC"
         )
         mail.send(msg)
@@ -131,7 +131,7 @@ def ajout_activite(id):
         db.session.add(activite)
 
         msg = Message("Ajout d'une activité au MOOC", sender = 'si@rnfrance.org',
-                    recipients = ['si@rnfrance.org'],
+                    recipients = ['contact-moocnaturadapt@tela-botanica.org'],
                     body= "Une activité a été ajouté au MOOC pour la structure %s" % contact.structure
             )
         mail.send(msg)
