@@ -33,6 +33,7 @@ class Annuaire(db.Model):
     enligne = db.Column(db.Boolean, default=False)
     enpresentiel = db.Column(db.Boolean, default=False)
     activites = db.relationship("Activite", back_populates='structure')
+    description_site = db.Column(db.Text)
 
 class Activite(db.Model):
     id = db.Column(db.Integer, primary_key=True) # primary keys are required by SQLAlchemy
@@ -74,8 +75,10 @@ def ajout_site():
         site = request.form.get('site') or None
         lat = request.form.get('lat') or None
         long = request.form.get('long') or None
+        description_structure = request.form.get('description_structure') or None
 
-        annuaire = Annuaire(prenom = prenom, nom = nom, lat = lat, long = long, email = email, telephone = telephone, structure = structure, fonction = fonction, site=site)
+        annuaire = Annuaire(prenom = prenom, nom = nom, lat = lat, long = long, email = email, telephone = telephone, structure = structure, fonction = fonction, site=site, description_site=description_structure)
+        
         db.session.add(annuaire)
 
         msg = Message("Ajout d'un référent au MOOC", sender = 'si@rnfrance.org',
@@ -84,13 +87,10 @@ def ajout_site():
         )
         mail.send(msg)
         db.session.commit()
-
-        contact = Annuaire.query.filter_by(prenom = prenom, nom = nom, email = email).first()
-
         
         if request.form.get('type_ajout') == 'activite' :
             flash(u'Nouveau référent correctement ajouté. Vous pouvez maintenant ajouter une activité', 'success')
-            return redirect(url_for('ajout_activite', id=contact.id))
+            return redirect(url_for('ajout_activite', id=annuaire.id))
         else :            
             flash(u'Nouveau référent correctement ajouté.', 'success')
             return redirect(url_for('index'))
@@ -103,9 +103,6 @@ def ajout_activite(id):
     contact = Annuaire.query.filter_by(id=id).first()
     
     if request.method == 'POST':
-
-        print(request.form.get('inscription'))
-        print(request.form.get('gratuit'))
 
         titre = request.form.get('titre') or None
         type_activite = request.form.get('type_activite') or None

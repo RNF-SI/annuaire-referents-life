@@ -12,19 +12,26 @@
 </div>
 <br>
 <div class="container">
+  <div><img src="{{ url_for('static', filename='img/bandeau.png')}}" alt="" width="100%"></div>
+  <br><br>
   <div class="">
-    <p style="text-align:justify;"> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur nec convallis neque. Donec a convallis nibh. Pellentesque erat velit, fringilla vel congue non, bibendum nec purus. Cras ut lacinia massa. In lacus lorem, ornare nec cursus id, sollicitudin eget lacus. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Integer suscipit enim tortor, vel hendrerit orci imperdiet ut. Ut vehicula nunc velit, vitae tempus purus malesuada vel. Cras a faucibus ipsum, sed blandit mauris. Phasellus eu erat pharetra, luctus orci ac, interdum risus. 
-<br><br>  Ut eros leo, pulvinar vitae massa vel, eleifend consequat sem. Phasellus in nibh vel ante ullamcorper varius. Praesent finibus felis quis finibus dapibus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean semper lacinia magna, ac imperdiet augue euismod ut. Pellentesque a arcu mi. Aliquam vestibulum lobortis eros, eu viverra ante interdum ac. Aenean vel consectetur est. Donec ac arcu nisi. Quisque cursus, tortor vel pretium consequat, dui ex bibendum eros, et pretium risus mauris et urna. Nunc egestas diam venenatis, tristique magna quis, tempus leo. Sed interdum ullamcorper rutrum. </p>
+    <p style="text-align:justify;">La formation “Agir en faveur de la nature face au changement climatique” est proposée par le projet européen LIFE Natur'Adapt, avec le soutien de Réserves Naturelles de France, et co-pilotée par Tela Botanica. Les inscriptions ouvrent le lundi 7 mars, et la diffusion débute le 18 mai à l'occasion de la Fête de la nature.</p> 
+    <p style="text-align:justify;">Plus qu'une formation en ligne, le MOOC souhaite inciter ses participants à aller à la rencontre d'acteurs engagés pour la nature, à proximité de chez eux. Grâce à une carte interactive, le mooqueur pourra facilement trouver un espace naturel à visiter, une structure avec qui il pourra échanger, des animations auxquelles participer.</p>
+    <p style="text-align:justify;">Parcours découverte, comptage d'espèces, reconnaissance des plantes, projection, exposition…les possibilités sont nombreuses !</p>
+    <p>Merci pour votre mobilisation ! </p>
+    <br>
+    <p><a href="https://naturadapt.com/groups/communaute/pages/--------------------agir-en-faveur-de-la-nature-face-au-changement-climatique">Plus d’infos sur le MOOC Natur’Adapt</a></p>
+    <p><a href="https://naturadapt.com/groups/referents-locaux-du-mooc-natur---adapt ">Plus d’infos sur votre rôle de référent en rejoignant la plateforme Natur’Adapt</a></p>
   </div>
   <br>
   <hr style="height: 3px; color: #839D2D; width: 50%;">
   <br>
-  <div class="boutons_index"><a class="btn btn-primary btn-lg" href="{{ url_for('ajout_site')}}" role="button">Ajouter un référent</a></div>
+  <div class="boutons_index"><a class="btn btn-primary btn-lg" href="{{ url_for('ajout_site')}}" role="button">Se référencer</a></div>
   <br>
     <div class="row check_carto">
       <div class="custom-control custom-switch">
         <input type="checkbox" class="custom-control-input" id="referentSwitch" onchange="toggleReferent(this)" checked>
-        <label class="custom-control-label" for="referentSwitch"> <img src="{{ url_for('static', filename='img/icone_referent.png')}}" alt="" width="20" height="20"> Référents</label>
+        <label class="custom-control-label" for="referentSwitch"> <img src="{{ url_for('static', filename='img/icone_referent.png')}}" alt="" width="20" height="20"> Points d'information <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Ne proposant pas d'activités"></i></label>
       </div>
       <div class="custom-control custom-switch">
         <input type="checkbox" class="custom-control-input" id="enligneSwitch" onchange="toggleActiviteEnLigne(this)" checked>
@@ -32,11 +39,11 @@
       </div>
       <div class="custom-control custom-switch">
         <input type="checkbox" class="custom-control-input" id="enpresentielSwitch" onchange="toggleActiviteEnPresentiel(this)" checked>
-        <label class="custom-control-label" for="enpresentielSwitch"> <img src="{{ url_for('static', filename='img/icone_activite_bleu.png')}}" alt="" width="20" height="20"> Activités en présentiel</label>
+        <label class="custom-control-label" for="enpresentielSwitch"> <img src="{{ url_for('static', filename='img/icone_activite_bleu.png')}}" alt="" width="20" height="20"> Activités sur place</label>
       </div>
       <div class="custom-control custom-switch">
         <input type="checkbox" class="custom-control-input" id="mixteSwitch" onchange="toggleActiviteMixte(this)" checked>
-        <label class="custom-control-label" for="mixteSwitch"> <img src="{{ url_for('static', filename='img/icone_activite_vert.png')}}" alt="" width="20" height="20"> Activités mixtes</label>
+        <label class="custom-control-label" for="mixteSwitch"> <img src="{{ url_for('static', filename='img/icone_activite_vert.png')}}" alt="" width="20" height="20"> Activités mixtes <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Proposant des activités en ligne ET sur place"></i></label>
       </div>
     </div>
     <hr>
@@ -96,7 +103,8 @@
     "ID" : "{{ contact.id }}",
     "SITE" : "{{ contact.site }}",
     "PHONE" : "{{ contact.telephone }}",
-    "MAIL" : "{{ contact.email }}"
+    "MAIL" : "{{ contact.email }}",
+    "DESCRIPTION_STRUCTURE" : "{{ contact.description_site }}"
   },
   {% endif %}
   {% endfor %}
@@ -116,6 +124,7 @@
     "SITE" : "{{ contact.site }}",
     "PHONE" : "{{ contact.telephone }}",
     "MAIL" : "{{ contact.email }}",
+    "DESCRIPTION_STRUCTURE" : "{{ contact.description_site }}",
     "ACTIVITES" : [
     {% for activite in contact.activites %}
   {
@@ -150,6 +159,7 @@
     "SITE" : "{{ contact.site }}",
     "PHONE" : "{{ contact.telephone }}",
     "MAIL" : "{{ contact.email }}",
+    "DESCRIPTION_STRUCTURE" : "{{ contact.description_site }}",
     "ACTIVITES" : [
     {% for activite in contact.activites %}
   {
@@ -184,6 +194,7 @@
     "SITE" : "{{ contact.site }}",
     "PHONE" : "{{ contact.telephone }}",
     "MAIL" : "{{ contact.email }}",
+    "DESCRIPTION_STRUCTURE" : "{{ contact.description_site }}",
     "ACTIVITES" : [
     {% for activite in contact.activites %}
   {
@@ -211,11 +222,12 @@
 
 
   function makePointLayer(point, icon, layer){
-    var site_web = (point.SITE == 'None') ? '' : ' (<a href="http://' + point.SITE + '">'+ point.SITE + '</a>)';
+    var site_web = (point.SITE == 'None') ? '' : ' (<a href="http://' + point.SITE + '" target="_blank">'+ point.SITE + '</a>)';
     var prenom = (point.SURNAME == 'None') ? '' : point.SURNAME + ' ';
     var nom = (point.NAME == 'None') ? '' : point.NAME + ' ';
     var fonction = (point.FONCTION == 'None') ? '' : '- ' + point.FONCTION;
     var telephone = (point.PHONE == 'None') ? '' : ' - ' + point.PHONE;
+    var description_structure = (point.DESCRIPTION_STRUCTURE == 'None') ? '' : '<br>' + point.DESCRIPTION_STRUCTURE + '<br>';
     var activites = '';
     if (point.ACTIVITES) {
       point['ACTIVITES'].forEach(function (element, index) {
@@ -252,7 +264,7 @@
     } else {
       var carousel = '<div style=\"text-align: center;\">Aucune activité proposée à ce jour</div>'
     }
-    var text = "<div style=\"text-align: center;\"><b>" +point.STRUCTURE+" "+site_web+"</b><br><br> "+ prenom + nom + fonction + telephone +"<br><br><a href='mailto:"+ point.MAIL + "'>Envoyer un mail</a><hr><b>Activités proposées :</b></div><br>"+ carousel +"<br><div style=\"text-align:right\"><a class=\"btn-sm\" href=\"{{url_for('ajout_activite', id='')}}"+point.ID+"\"><i class=\"fa fa-plus\"></i> Ajouter une activité</a><div>";
+    var text = "<div style=\"text-align: center;\"><b>" +point.STRUCTURE+" "+site_web+"</b><br><br> "+ prenom + nom + fonction + telephone + description_structure + "<br><br><a href='mailto:"+ point.MAIL + "'>Envoyer un mail</a><hr><b>Activités proposées :</b></div><br>"+ carousel +"<br><div style=\"text-align:right\"><a class=\"btn-sm\" href=\"{{url_for('ajout_activite', id='')}}"+point.ID+"\"><i class=\"fa fa-plus\"></i> Ajouter une activité</a><div>";
     marker = L.marker([point.LAT, point.LNG], {icon: icon})
     .bindPopup(text, {maxWidth : 800, minWidth: 400});
     layer.addLayer(marker);

@@ -18,7 +18,7 @@
         {% endif %}
         {% endwith %}
 
-        <h2 style="color: orange;">Ajouter une nouvelle activité pour la structure "{{ contact.structure }}"</h2>
+        <h2 style="color: #ffdd00;">Ajouter une nouvelle activité pour la structure "{{ contact.structure }}"</h2>
         <p>Entrez les informations sur l'activité proposée</p>
         <div class="text-center alerte-remplissage">
             <b>ATTENTION</b> : Veillez à remplir correctement, et de façon complète, l'ensemble des informations
@@ -42,7 +42,7 @@
                         <select class="form-control" id="type_activite" name="type_activite" required>
                             <option selected disabled value=""></option>
                             <option value="online">Activité en ligne</option>
-                            <option value="physique">Activité locale</option>
+                            <option value="physique">Activité sur place</option>
                         </select>
                     </div>
                 </div>
@@ -120,7 +120,7 @@
             <div class="col-auto my-1">
                 <div class="custom-control custom-checkbox mr-sm-2">
                     <input type="checkbox" class="custom-control-input" id="exactitude" required>
-                    <label class="custom-control-label" for="exactitude">Je certifie l'exactitude des informations
+                    <label class="custom-control-label" for="exactitude"><span style="color:red;">*</span> Je certifie l'exactitude des informations
                         fournies
                         ci-dessus</label>
                 </div>
@@ -128,7 +128,7 @@
             <div class="col-auto my-1">
                 <div class="custom-control custom-checkbox mr-sm-2">
                     <input type="checkbox" class="custom-control-input" id="publication" required>
-                    <label class="custom-control-label" for="publication">J'accepte que les informations transmises
+                    <label class="custom-control-label" for="publication"><span style="color:red;">*</span> J'accepte que les informations transmises
                         soient
                         publiées sur ce site et certifie avoir l'autorisation de les publier</label>
                 </div>
@@ -140,8 +140,7 @@
 
                     <div class="custom-control custom-switch">
                         <input type="checkbox" class="custom-control-input" id="autre_activite" name="autre_activite">
-                        <label class="custom-control-label" for="autre_activite">Ajouter encore une activité à ce
-                            site</label>
+                        <label class="custom-control-label" for="autre_activite">Ajouter une nouvelle activité pour ma structure</label>
                     </div>
                 </div>
             </div>

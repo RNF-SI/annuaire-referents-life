@@ -44,7 +44,7 @@
 
 <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
   <div class="container">
-    <a class="navbar-brand titre" href="{{ url_for('index')}}"> Référents MOOC Life NaturAdapt  <i class="far fa-address-book"></i></a>
+    <a class="navbar-brand titre"> Référents MOOC LIFE Natur'Adapt  <i class="far fa-address-book"></i></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -55,7 +55,7 @@
           <a class="nav-link" href="{{ url_for('index')}}">Accueil <span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item active">
-          <a class="nav-link" href="{{ url_for('ajout_site')}}">Ajouter un référent <span class="sr-only">(current)</span></a>
+          <a class="nav-link" href="{{ url_for('ajout_site')}}">Se référencer <span class="sr-only">(current)</span></a>
         </li>
       </ul>
     </div>
@@ -79,6 +79,9 @@
     <div class="">
       <a href="https://reserves-naturelles.org/" target="_blank"><img src="{{ url_for('static', filename='img/logo_rnf_vert.png')}}" alt="" ></a>
     </div>
+    <div class="">
+      <a href="https://www.tela-botanica.org/" target="_blank"><img src="{{ url_for('static', filename='img/logo_tela_botanica.png')}}" alt="" ></a>
+    </div>
     <div class="mentions_legales" style="text-align:center;">
       <a data-toggle="modal" data-target="#mentionsLegalesModal" href="#mentionsLegalesModal">Mentions légales</a>
     </div>
@@ -95,7 +98,19 @@
           </button>
         </div>
         <div class="modal-body">
-            <p>
+          <p>
+            En utilisant le formulaire des référents du MOOC Natur’Adapt et les outils de saisie associés (widgets), vous acceptez que le projet LIFE Natur’Adapt enregistre et, le cas échéant, publie les données personnelles renseignées sur le formulaire en saisissant une activité ou en référençant votre structure. Ces données sont collectées car elles permettent aux visiteurs de la carte de vous identifier et vous contacter via les données renseignées. 
+          </p>
+          <p>
+            Ainsi, en référençant votre structure vous acceptez de céder un droit d'usage interne au projet LIFE Natur’Adapt et Tela Formation dans le cadre du MOOC, non exclusif, non limité dans le temps et à titre gratuit, sur l’ensemble des données publiques, notamment celui de les détenir, de les dupliquer, de les archiver (newsletter, mail etc). 
+          </p>
+          <p>
+            Les données fournies via le formulaire apparaîtront sur la carte interactive. Cette carte sera valorisée via différents supports de communication du projet LIFE Natur’Adapt et de la plateforme Tela Formation, auprès du public : plateforme, newsletter, réseaux sociaux etc (liste non exhaustive).
+          </p>
+          <p>
+            Vous pouvez à tout moment nous contacter via le groupe référent de la plateforme Natur’Adapt et l’adresse mail : contact-moocnaturadapt@tela-botanica.org  pour modifier et supprimer définitivement vos données. 
+          </p>
+            <!-- <p>
               Vous êtes sur l'annuaire des référents MOOC pour le Life NaturAdapt, édité par Réserves naturelles de France (RNF), association loi 1901.
             </p>
             <p>
@@ -185,7 +200,7 @@
             <p>
               Loi 78-17 du 6 janvier 1978 Loi relative à l'informatique, aux fichiers et aux libertés<br>
               Loi du 29 juillet 1881 Loi sur la liberté de la presse
-            </p>
+            </p> -->
           </div>
       </div>
   </div>

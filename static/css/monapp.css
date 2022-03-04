@@ -11,11 +11,11 @@
 }
 
 .navbar-brand.titre {
-  color : #ed7d31 !important;
+  color : white !important;
 }
 
 .navbar-nav.mr-auto li:hover a:hover {
-  color : #ed7d31 !important;
+  color : #ffdd00 !important;
 }
 
 .partenaires {
@@ -57,7 +57,7 @@
 }
 
 .identite h3 {
-  color : #ed7d31;
+  color : #ffdd00;
 }
 .identite h4 {
   font-variant-caps: small-caps;
@@ -84,17 +84,17 @@
 }
 
 .btn-primary, .btn-primary:active, .btn-primary:visited {
-    background-color: #203864 !important;
-    border-color: #203864 !important;
+    background-color: #5C0251 !important;
+    border-color: #5C0251 !important;
 }
 
 .btn-primary:hover {
-    color : #ed7d31 !important ;
+    color : #ffdd00 !important ;
 }
 
 .bg-dark {
-  background-color: #203864 !important;
-  border-color: #203864 !important;
+  background-color: #5C0251 !important;
+  border-color: #5C0251 !important;
 }
 
 .check_carto {
@@ -118,7 +118,7 @@
 }
 
 .mentions_legales a:hover {
-  color: #203864;
+  color: #5C0251;
 }
 
 .nom-fiche {
@@ -127,7 +127,7 @@
 }
 
 .alerte-remplissage {
-  background-color: rgba(193,66,66,0.6);
+  background-color: #009bd9 ;
   border-radius: 5px;
 }
 
@@ -141,7 +141,7 @@
 }
 
 .btn-sm {
-  background-color: DodgerBlue; /* Blue background */
+  background-color: #009bd9; /* Blue background */
   border: none; /* Remove borders */
   color: white !important; /* White text */
   /* padding: 12px 16px; */
@@ -152,5 +152,13 @@
 
 /* Darker background on mouse-over */
 .btn-sm:hover {
-  background-color: RoyalBlue;
+  color : #ffdd00 !important ;
+}
+
+.leaflet-popup-content-wrapper a {
+  color: #009bd9;
+}
+
+.leaflet-popup-content-wrapper a:hover {
+  color: #5C0251;
 }

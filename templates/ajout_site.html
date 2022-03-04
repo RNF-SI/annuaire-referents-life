@@ -18,8 +18,8 @@
     {% endif %}
     {% endwith %}
 
-    <h2 style="color: orange;">Ajouter un nouveau référent</h2>
-    <p>Entrez les coordonnées du référent ou de la structure référente</p>
+    <h2 style="color: #ffdd00;">Se référencer</h2>
+    <p>Entrez les coordonnées du point d'informations</p>
     <div class="text-center alerte-remplissage">
       <b>ATTENTION</b> : Veillez à remplir correctement, et de façon complète, l'ensemble des informations demandées.
       <br>Aucune modification n'est possible ensuite sans passer par l'administrateur.
@@ -85,6 +85,15 @@
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                  <div class="col col-md-12">
+                      <div class="form-group">
+                          <label for="description_structure">Courte description de la structure</label>
+                          <textarea type="text" class="form-control" name="description_structure"
+                              placeholder="Entrez une courte description de la structure"></textarea>
+                      </div>
+                  </div>
+              </div>
             </div>
         </div>
         <br>
@@ -105,6 +114,8 @@
                 </div>
             </div>
         </div>
+        <div style="text-align: center;font-style: italic;">Cliquez directement sur la carte pour ajouter votre point</div>
+        <br>
       <div>
         <div id="map" style="height: 400px; width: 100%">
         </div>
@@ -114,14 +125,14 @@
       <div class="col-auto my-1">
         <div class="custom-control custom-checkbox mr-sm-2">
           <input type="checkbox" class="custom-control-input" id="exactitude" required>
-          <label class="custom-control-label" for="exactitude">Je certifie l'exactitude des informations fournies
+          <label class="custom-control-label" for="exactitude"><span style="color:red;">*</span> Je certifie l'exactitude des informations fournies
             ci-dessus</label>
         </div>
       </div>
       <div class="col-auto my-1">
         <div class="custom-control custom-checkbox mr-sm-2">
           <input type="checkbox" class="custom-control-input" id="publication" required>
-          <label class="custom-control-label" for="publication">J'accepte que les informations transmises soient
+          <label class="custom-control-label" for="publication"><span style="color:red;">*</span> J'accepte que les informations transmises soient
             publiées sur ce site et certifie avoir l'autorisation de les publier</label>
         </div>
       </div>
@@ -132,10 +143,10 @@
         <div class="col col-md-4">
           <div class="form-group">
             <label for="type_ajout">Type d'ajout <span style="color:red;">*</span></label>
-            <select class="form-control" id="type_ajout" name="type_ajout">
-              <option selected disabled value=null></option>
-              <option value="simple">Simple référent</option>
-              <option value="activite">Ajouter également une activité</option>
+            <select class="form-control" id="type_ajout" name="type_ajout" required>
+              <option selected disabled value=''></option>
+              <option value="simple">Point d'informations</option>
+              <option value="activite">Ajouter une activité</option>
             </select>
           </div>
         </div>
