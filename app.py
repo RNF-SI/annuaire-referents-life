@@ -54,6 +54,12 @@ class Activite(db.Model):
 def index():
     contacts = Annuaire.query.all()
 
+    for contact in contacts :
+        if contact.description_site :
+            print(contact.description_site)
+            text = contact.description_site.split('\n')
+            print(text)
+
     return render_template('index.html', contacts=contacts)
 
 @app.route('/ajout-site', methods=['GET', 'POST'])

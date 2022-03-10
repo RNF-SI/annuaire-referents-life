@@ -88,9 +88,9 @@
                 <div class="row">
                   <div class="col col-md-12">
                       <div class="form-group">
-                          <label for="description_structure">Courte description de la structure</label>
-                          <textarea type="text" class="form-control" name="description_structure"
-                              placeholder="Entrez une courte description de la structure"></textarea>
+                          <label for="description_structure">Courte description de la structure  (<span id="compteur">0</span>/800 caractères)</label>
+                          <textarea id=description_structure type="text" class="form-control" name="description_structure"
+                              placeholder="Entrez une courte description de la structure" maxlength="800" ></textarea>
                       </div>
                   </div>
               </div>
@@ -196,6 +196,10 @@
   $(".readonly").on('keydown paste', function (e) {
     e.preventDefault();
   });
+
+  document.getElementById('description_structure').addEventListener('keyup', function() {
+        document.getElementById('compteur').innerHTML = description_structure.value.length;
+    });
 
 </script>
 {% endblock content %}

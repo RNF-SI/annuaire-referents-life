@@ -14,11 +14,12 @@
 <div class="container">
   <div><img src="{{ url_for('static', filename='img/bandeau.png')}}" alt="" width="100%"></div>
   <br><br>
+  <h3 style="text-align: center;font-weight: bold;color: #5C0251;">Bienvenue sur la carte interactive des activités<br>proposées dans le cadre du MOOC Natur’Adapt</h3>
+  <br>
   <div class="">
-    <p style="text-align:justify;">La formation “Agir en faveur de la nature face au changement climatique” est proposée par le projet européen LIFE Natur'Adapt, avec le soutien de Réserves Naturelles de France, et co-pilotée par Tela Botanica. Les inscriptions ouvrent le lundi 7 mars, et la diffusion débute le 18 mai à l'occasion de la Fête de la nature.</p> 
-    <p style="text-align:justify;">Plus qu'une formation en ligne, le MOOC souhaite inciter ses participants à aller à la rencontre d'acteurs engagés pour la nature, à proximité de chez eux. Grâce à une carte interactive, le mooqueur pourra facilement trouver un espace naturel à visiter, une structure avec qui il pourra échanger, des animations auxquelles participer.</p>
+    <p style="text-align:justify;">La formation “Agir en faveur de la nature face au changement climatique” est proposée par Réserves Naturelles de France et Tela Botanica, dans le cadre du projet LIFE Natur’Adapt. Les inscriptions sont déjà ouvertes, et la diffusion débute le 18 mai à l'occasion de la Fête de la nature.</p> 
+    <p style="text-align:justify;">Au-delà du numérique, le MOOC souhaite inciter ses participants à aller à la rencontre d'acteurs engagés pour la nature, à proximité de chez eux. Grâce à cette carte interactive, vous pourrez facilement trouver un espace naturel à visiter, une structure avec qui échanger, des animations auxquelles participer.</p>
     <p style="text-align:justify;">Parcours découverte, comptage d'espèces, reconnaissance des plantes, projection, exposition…les possibilités sont nombreuses !</p>
-    <p>Merci pour votre mobilisation ! </p>
     <br>
     <p><a href=" https://naturadapt.com/groups/communaute/articles/mooc-natur-adapt----agir-en-faveur-de-la-nature-face-au-changement-climatique" target="_blank">Plus d’infos sur le MOOC Natur’Adapt</a></p>
     <p><a href="https://naturadapt.com/groups/referents-locaux-du-mooc-natur---adapt " target="_blank">Plus d’infos sur votre rôle de référent en rejoignant la plateforme Natur’Adapt</a></p>
@@ -26,7 +27,12 @@
   <br>
   <hr style="height: 3px; color: #839D2D; width: 50%;">
   <br>
+  <div style="text-align: center;font-weight: bold;color: #009bd9;">Vous êtes une structure ?</div>
+  <br>
   <div class="boutons_index"><a class="btn btn-primary btn-lg" href="{{ url_for('ajout_site')}}" role="button">Se référencer</a></div>
+  <br>
+  <div style="text-align: center;font-weight: bold;color: #009bd9;">Vous êtes un moocqueur ?</div>
+  <div style="text-align: center;">Naviguez sur la carte ci-dessous et utilisez les filtres.</div>
   <br>
     <div class="row check_carto">
       <div class="custom-control custom-switch">
@@ -92,6 +98,9 @@
 
   var referent = [
   {% for contact in contacts %}
+  {% if contact.description_site %}
+  {% set text = contact.description_site.replace('\r','').split('\n') %}
+  {% endif %}
   {% if contact.enligne == False and contact.enpresentiel == False %}
   {
     "LNG": "{{ contact.long }}",
@@ -104,7 +113,7 @@
     "SITE" : "{{ contact.site }}",
     "PHONE" : "{{ contact.telephone }}",
     "MAIL" : "{{ contact.email }}",
-    "DESCRIPTION_STRUCTURE" : "{{ contact.description_site }}"
+    "DESCRIPTION_STRUCTURE" : "{{ text|join("<br>") }}"
   },
   {% endif %}
   {% endfor %}
@@ -112,6 +121,9 @@
 
   var activite_mixte = [
   {% for contact in contacts %}
+  {% if contact.description_site %}
+  {% set text = contact.description_site.replace('\r','').split('\n') %}
+  {% endif %}
   {% if contact.enligne == True and contact.enpresentiel == True %}
   {
     "LNG": "{{ contact.long }}",
@@ -124,16 +136,19 @@
     "SITE" : "{{ contact.site }}",
     "PHONE" : "{{ contact.telephone }}",
     "MAIL" : "{{ contact.email }}",
-    "DESCRIPTION_STRUCTURE" : "{{ contact.description_site }}",
+    "DESCRIPTION_STRUCTURE" : "{{  text|join("<br>") }}",
     "ACTIVITES" : [
     {% for activite in contact.activites %}
+    {% if activite.description %}
+    {% set textact = activite.description.replace('\r','').split('\n') %}
+    {% endif %}
   {
     "TITRE":"{{ activite.titre }}",
     "WEB" : "{{ activite.site_web }}",
     "ENLIGNE" : "{{ activite.enligne }}",
     "DATE"  : "{{ activite.date }}",
     "ADRESSE" : "{{ activite.adresse }}",
-    "DESCRIPTION" : "{{ activite.description }}",
+    "DESCRIPTION" : "{{ textact|join("<br>") }}",
     "INSCRIPTION" : "{{ activite.inscription }}",
     "GRATUIT" : "{{ activite.gratuit }}",
     "LIEN" : "{{ activite.lien_inscription }}"
@@ -147,6 +162,9 @@
 
   var activite_en_ligne = [
   {% for contact in contacts %}
+  {% if contact.description_site %}
+  {% set text = contact.description_site.replace('\r','').split('\n') %}
+  {% endif %}
   {% if contact.enligne == True and contact.enpresentiel == False %}
   {
     "LNG": "{{ contact.long }}",
@@ -159,16 +177,19 @@
     "SITE" : "{{ contact.site }}",
     "PHONE" : "{{ contact.telephone }}",
     "MAIL" : "{{ contact.email }}",
-    "DESCRIPTION_STRUCTURE" : "{{ contact.description_site }}",
+    "DESCRIPTION_STRUCTURE" : "{{  text|join("<br>")  }}",
     "ACTIVITES" : [
     {% for activite in contact.activites %}
+    {% if activite.description %}
+    {% set textact = activite.description.replace('\r','').split('\n') %}
+    {% endif %}
   {
     "TITRE":"{{ activite.titre }}",
     "WEB" : "{{ activite.site_web }}",
     "ENLIGNE" : "{{ activite.enligne }}",
     "DATE"  : "{{ activite.date }}",
     "ADRESSE" : "{{ activite.adresse }}",
-    "DESCRIPTION" : "{{ activite.description }}",
+    "DESCRIPTION" : "{{ textact|join("<br>") }}",
     "INSCRIPTION" : "{{ activite.inscription }}",
     "GRATUIT" : "{{ activite.gratuit }}",
     "LIEN" : "{{ activite.lien_inscription }}"
@@ -180,8 +201,13 @@
   {% endfor %}
   ];
 
+  console.log(activite_en_ligne);
+
   var activite_sur_place = [
   {% for contact in contacts %}
+  {% if contact.description_site %}
+  {% set text = contact.description_site.replace('\r','').split('\n') %}
+  {% endif %}
   {% if contact.enligne == False and contact.enpresentiel == True %}
   {
     "LNG": "{{ contact.long }}",
@@ -194,16 +220,19 @@
     "SITE" : "{{ contact.site }}",
     "PHONE" : "{{ contact.telephone }}",
     "MAIL" : "{{ contact.email }}",
-    "DESCRIPTION_STRUCTURE" : "{{ contact.description_site }}",
+    "DESCRIPTION_STRUCTURE" : "{{  text|join("<br>")  }}",
     "ACTIVITES" : [
     {% for activite in contact.activites %}
+    {% if activite.description %}
+    {% set textact = activite.description.replace('\r','').split('\n') %}
+    {% endif %}
   {
     "TITRE":"{{ activite.titre }}",
     "WEB" : "{{ activite.site_web }}",
     "ENLIGNE" : "{{ activite.enligne }}",
     "DATE"  : "{{ activite.date }}",
     "ADRESSE" : "{{ activite.adresse }}",
-    "DESCRIPTION" : "{{ activite.description }}",
+    "DESCRIPTION" : "{{ textact|join("<br>") }}",
     "INSCRIPTION" : "{{ activite.inscription }}",
     "GRATUIT" : "{{ activite.gratuit }}",
     "LIEN" : "{{ activite.lien_inscription }}"
@@ -227,7 +256,10 @@
     var nom = (point.NAME == 'None') ? '' : point.NAME + ' ';
     var fonction = (point.FONCTION == 'None') ? '' : '- ' + point.FONCTION;
     var telephone = (point.PHONE == 'None') ? '' : ' - ' + point.PHONE;
-    var description_structure = (point.DESCRIPTION_STRUCTURE == 'None') ? '' : '<br>' + point.DESCRIPTION_STRUCTURE + '<br>';
+    if (point.DESCRIPTION_STRUCTURE != 'None') {
+    }
+    var description_structure = (point.DESCRIPTION_STRUCTURE == 'None') ? '' : '<br><br>' + point.DESCRIPTION_STRUCTURE + '<br>';
+    description_structure = description_structure.replace(/&lt;/g, "<").replace(/&gt;/g, ">");
     var activites = '';
     if (point.ACTIVITES) {
       point['ACTIVITES'].forEach(function (element, index) {
@@ -257,7 +289,10 @@
         } else {
           var inscription = "<div><b>Inscription optionelle : </b> <a href=\"http://" + element.LIEN + "\">"+ element.LIEN + "</a></div>"
         }
-        var text = "<div class=\"carousel-item " + active +"\"><div><div><p style=\"float : left\"><b>"+element.TITRE + "</b></p><p style=\"float : right\">" + enligne + " / " + prix + "</p></div><div style=\"clear: both;width: 80%;margin-left:10%;margin-right:10%\">"+ datelieu + "</div></div><div style=\"clear: both;display: inline-block \">"+ element.DESCRIPTION +"</div><br><br><div style=\"clear: both\">"+ inscription +"</div></div>"
+        var description = element.DESCRIPTION;
+        description = description.replace(/&lt;/g, "<").replace(/&gt;/g, ">");
+        console.log(description);
+        var text = "<div class=\"carousel-item " + active +"\"><div><div><p style=\"float : left\"><b>"+element.TITRE + "</b></p><p style=\"float : right\">" + enligne + " / " + prix + "</p></div><div style=\"clear: both;width: 80%;margin-left:10%;margin-right:10%\">"+ datelieu + "</div></div><div style=\"clear: both;display: inline-block \">"+ description +"</div><br><br><div style=\"clear: both\">"+ inscription +"</div></div>"
         activites += text;
       })
       var carousel = "<div id=\"carouselExampleControls\" class=\"carousel slide\" data-ride=\"carousel\"><div class=\"carousel-inner\">"+ activites +"</div><a class=\"carousel-control-prev\" href=\"#carouselExampleControls\" role=\"button\" data-slide=\"prev\"><span class=\"carousel-control-prev-icon\" aria-hidden=\"true\"></span><span class=\"sr-only\">Previous</span></a><a class=\"carousel-control-next\" href=\"#carouselExampleControls\" role=\"button\" data-slide=\"next\"><span class=\"carousel-control-next-icon\" aria-hidden=\"true\"></span><span class=\"sr-only\">Next</span></a></div>"

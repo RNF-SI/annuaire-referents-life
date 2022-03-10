@@ -85,9 +85,9 @@
                 <div class="col col-md-12">
                     <div class="form-group">
                         <label for="description">Courte description de l'activité <span
-                                style="color:red;">*</span></label>
-                        <textarea type="text" class="form-control" name="description"
-                            placeholder="Entrez une courte description de l'activité" required></textarea>
+                                style="color:red;">*</span>  (<span id="compteur">0</span>/500 caractères)</label>
+                        <textarea id=description type="text" class="form-control" name="description"
+                            placeholder="Entrez une courte description de l'activité" maxlength="500" required></textarea>
                     </div>
                 </div>
             </div>
@@ -203,6 +203,9 @@
 
     });
 
+    document.getElementById('description').addEventListener('keyup', function() {
+        document.getElementById('compteur').innerHTML = description.value.length;
+    });
 
 </script>
 {% endblock content %}
