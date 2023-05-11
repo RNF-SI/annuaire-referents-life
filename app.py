@@ -6,10 +6,14 @@ from flask_mail import Mail, Message
 from config import Config
 from flask_migrate import Migrate
 from flask_marshmallow import Marshmallow
+from flask_matomo import *
 
 app = Flask(__name__)
 app.config.from_object(Config)
 mail = Mail()
+
+matomo = Matomo(app, matomo_url="https://matomo.reserves-naturelles.org",
+                id_site=4, token_auth=Config.TOKEN_MATOMO)
 
 db = SQLAlchemy(app)
 ma = Marshmallow(app)
